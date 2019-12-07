@@ -1,2 +1,2 @@
 # cheleditor
-Editor de Terreno 2D con Tiles usando lwjgl
+Editor de Tiles 2D usando lwjgl
