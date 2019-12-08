@@ -295,7 +295,7 @@ public class Main {
 			point_buffer.flip();
 			
 			//vboVertices = glGenBuffers();
-			 vboVertices = glGenBuffers();
+			vboVertices = glGenBuffers();
 			 
 			glBindBuffer(GL_ARRAY_BUFFER , vboVertices);
 			glBufferData(GL_ARRAY_BUFFER , point_buffer , GL_DYNAMIC_DRAW);

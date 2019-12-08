@@ -64,12 +64,20 @@ public class Application {
 	
 	private Scene scene;
 	
-	private int wWidth = 1024;
-	private int wHeight = 768;
+	private int wWidth;
+	private int wHeight;
+	private static final int WIDTH_WINDOW  = 1024;
+	private static final int HEIGHT_WINDOW = 768;
+	
+	GLFWVidMode vidmode;
+	private long monitor;
 
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
-
+		
+		wWidth  = WIDTH_WINDOW;
+		wHeight = HEIGHT_WINDOW;
+		
 		init();
 		loop();
 
@@ -106,15 +114,28 @@ public class Application {
 		
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
 		
+		glfwWindowHint(GLFW_DECORATED, 1);
+		
+		// Get the resolution of the primary monitor
+		monitor = glfwGetPrimaryMonitor();
+		vidmode = glfwGetVideoMode(monitor);
+		
 		// Create the window
-		window = glfwCreateWindow(1024, 768, "Hello World!", NULL, NULL);
+		window = glfwCreateWindow(WIDTH_WINDOW, HEIGHT_WINDOW, "Cheleditor", NULL, NULL);
 		if ( window == NULL )
 			throw new RuntimeException("Failed to create the GLFW window");
+
 
 		// Setup a key callback. It will be called every time a key is pressed, repeated or released.
 		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
 			if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
 				glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+			
+			if ( key == GLFW_KEY_F1 && action == GLFW_RELEASE )
+				OnFullScreen();
+			
+			if (key == GLFW_KEY_F2 && action == GLFW_RELEASE)
+				OnRestoreWindow();
 		});
 		
 		// Get the thread stack and push a new frame
@@ -124,9 +145,6 @@ public class Application {
 			// Get the window size passed to glfwCreateWindow
 			glfwGetWindowSize(window, pWidth, pHeight);
 
-			// Get the resolution of the primary monitor
-			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			
 			// Center the window
 			glfwSetWindowPos(
 				window,
@@ -190,6 +208,7 @@ public class Application {
 			int state = glfwGetKey(window, GLFW_KEY_E);
 			if (state == GLFW_PRESS) {
 				System.out.println("Press E");
+				OnFullScreen();
 			}
 
 			scene.update(0.016f);
@@ -197,12 +216,32 @@ public class Application {
 			
 			glfwSwapBuffers(window); // swap the color buffers
 
-
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
 			glfwPollEvents();
 		}
 	}
+	
+	private void OnFullScreen() {
+		glfwWindowHint(GLFW_DECORATED, 0);
+		wWidth = vidmode.width();
+		wHeight = vidmode.height();
+		glfwSetWindowSize(window, wWidth, wHeight);
+		glfwSetWindowPos(window, 0 , 0);
+		glfwSetWindowMonitor(window, monitor, 0, 0, wWidth, wHeight, vidmode.refreshRate());
+		glfwSwapInterval(1);
+	}
+	
+	private void OnRestoreWindow() {
+		glfwWindowHint(GLFW_DECORATED, 1);
+		wWidth = WIDTH_WINDOW; 
+		wHeight = HEIGHT_WINDOW;
+		glfwSetWindowMonitor(window, 0,
+				(vidmode.width()  - wWidth) / 2, 
+				(vidmode.height() - wHeight) / 2, 
+			wWidth, wHeight, vidmode.refreshRate());
+	}
+	
 
 	public static void main(String[] args) {
 		new Application().run();
