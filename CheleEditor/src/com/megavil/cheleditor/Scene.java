@@ -22,7 +22,6 @@ public class Scene {
 	protected CameraPerspective camera3D;
 	
 	// Game Nodes
-	private Node3D nodeTriangle = null;
 	private ArrayList<Node3D> nodes = new ArrayList<Node3D>();
 	
 	public Scene() {
@@ -44,7 +43,6 @@ public class Scene {
 	protected void OnConfigRenderer() {
 		stage = new Node3D();
 		renderer3D = new Renderer3D(shader3D);
-		
 	}
 	
 	protected void OnConfigNodes() {
@@ -52,11 +50,7 @@ public class Scene {
 		camera3D.translate(0, 0, 5.0f);
 	}
 	
-	
 	public void create() {
-		/* Creando un Triangulo con Colores */ 
-		nodeTriangle = new Node3D();
-		
 		Geometry geometry = new Geometry();
 		geometry.setVertices(new float[] {0    ,  0.5f , 0,
 										 -0.5f , -0.5f , 0,
@@ -71,7 +65,8 @@ public class Scene {
 		for (int i = 0; i < 1000; i++) {
 			Node3D node = new Node3D();
 			node.addComponent(mesh);
-			node.translate((float)Math.random() * 15.0f , 0 , 0);
+			node.translate(-10.0f + (float)Math.random() * 25.0f , 0 , 0);
+			node.scaling((float)Math.random(), (float)Math.random(), 1);
 			nodes.add(node);
 			stage.addChild(node);
 		}

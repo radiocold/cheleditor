@@ -10,7 +10,6 @@ public class Material3D {
 	private boolean visible;
 	private boolean showWireframe;	
 	private Vector3f colorWireframe;
-	
 	private Shader3D shader3D;
 	
 	public Material3D() {

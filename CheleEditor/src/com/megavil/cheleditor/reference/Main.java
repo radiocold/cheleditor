@@ -1,4 +1,4 @@
-package com.megavil.cheleditor;
+package com.megavil.cheleditor.reference;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;

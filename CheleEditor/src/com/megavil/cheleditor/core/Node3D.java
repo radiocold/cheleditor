@@ -50,7 +50,7 @@ public class Node3D extends Node {
 	}
 	
 	public void scaling(float vx , float vy , float vz) {
-		this.scale.add(vx, vy, vz);
+		this.scale.mul(vx, vy, vz);
 		dirty = true;
 	}
 	
