@@ -1,12 +1,14 @@
 package com.megavil.cheleditor;
 
+import java.util.ArrayList;
+
 import org.joml.Math;
 
+import com.megavil.cheleditor.component.MeshRender3D;
 import com.megavil.cheleditor.core.CameraPerspective;
 import com.megavil.cheleditor.core.Geometry;
 import com.megavil.cheleditor.core.Node3D;
 import com.megavil.cheleditor.material.Material3D;
-import com.megavil.cheleditor.mesh.Mesh3D;
 import com.megavil.cheleditor.renderer.Renderer3D;
 import com.megavil.cheleditor.shader.Shader3D;
 
@@ -21,7 +23,7 @@ public class Scene {
 	
 	// Game Nodes
 	private Node3D nodeTriangle = null;
-	
+	private ArrayList<Node3D> nodes = new ArrayList();
 	
 	public Scene() {
 		OnConfigShadersMaterials();
@@ -46,7 +48,8 @@ public class Scene {
 	}
 	
 	protected void OnConfigNodes() {
-		camera3D = new CameraPerspective(57.0f * (float)Math.PI / 180.0f, 1024.0f/640.0f, 0.1f, 100.0f);
+		camera3D = new CameraPerspective(57.0f * (float)Math.PI / 180.0f, 1024.0f/768.0f, 0.1f, 100.0f);
+		camera3D.translate(0, 0, 5.0f);
 	}
 	
 	
@@ -63,16 +66,33 @@ public class Scene {
 									    0.0f , 1.0f , 0,
 									    0.0f , 0.0f , 1.0f});
 		
-		Mesh3D mesh = new Mesh3D(geometry, material3D);
+		MeshRender3D mesh = new MeshRender3D(geometry, material3D);
 		
 		nodeTriangle.addComponent(mesh);
 		stage.addChild(nodeTriangle);
+		
+		
+		for (int i = 0; i < 50; i++) {
+			Node3D node = new Node3D();
+			node.addComponent(mesh);
+			node.translate(i * 0.01f , 0 , 0);
+			nodes.add(node);
+			stage.addChild(node);
+		}
 		
 	}
 	
 	public void update(float dt) {
 		if (nodeTriangle != null) {
-			nodeTriangle.move(0.01f, 0.0f, 0.0f);
+			nodeTriangle.translate(0.01f, 0.0f, 0.0f);
+			//nodeTriangle.scaling(0.1f, 0.1f, 0.0f);
+		// 	nodeTriangle.addEulerAngleZ(0.01f);
+		}
+		
+		
+		for (int i = 0; i < 50; i++) {
+			Node3D node = nodes.get(i);
+			node.translate(-0.01f, 0 , 0);
 		}
 	}
 	

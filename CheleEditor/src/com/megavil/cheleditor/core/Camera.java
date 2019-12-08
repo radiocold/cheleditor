@@ -8,20 +8,12 @@ public class Camera extends Node3D {
 	protected Matrix4f mViewInv;
 	
 	public Camera() {
-		mView = new Matrix4f();
+		super();
 		mViewInv = new Matrix4f();
 	}
 	
-	public Matrix4f getMatrixView() {
-		mView.translate(position);
-		mView.rotate(quaternion);
-		mView.scale(scale);
-		return mView;
-	}
-	
-	
 	public Matrix4f getMatrixViewInv() {
-		return mView.invert(mViewInv);
+		return getCalculateModelMatrix().invert(mViewInv);
 	}
 	
 }

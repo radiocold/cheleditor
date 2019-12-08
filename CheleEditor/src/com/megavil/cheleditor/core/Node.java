@@ -63,6 +63,8 @@ public class Node {
 	}
 	
 	public void render() {
-		
+		for (ComponentNode component : components) {
+			component.render();
+		}
 	}
 }

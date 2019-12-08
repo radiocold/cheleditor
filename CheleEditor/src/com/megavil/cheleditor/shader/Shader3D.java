@@ -1,6 +1,7 @@
 package com.megavil.cheleditor.shader;
 
 import static org.lwjgl.opengl.GL20.*;
+import org.lwjgl.opengl.GL;
 
 import com.megavil.cheleditor.core.ShaderProgram;
 /**
@@ -25,12 +26,12 @@ public class Shader3D {
 			"in vec3 in_color;\n" +
 			"out vec3 o_color;\n" +
 			
-			"uniform mat3 u_model;\n"+
-			"uniform mat3 u_view;\n"+
-			"uniform mat3 u_proj;\n"+
+			"uniform mat4 u_model;\n"+
+			"uniform mat4 u_view;\n"+
+			"uniform mat4 u_proj;\n"+
 		
 			"void main () {\n" +
-			"  gl_Position = u_proj * u_view * u_model *  vec4(position, 1.0);\n" +
+			"  gl_Position = u_proj * u_view * u_model *  vec4(in_position, 1.0);\n" +
 			"  o_color = in_color;\n"+ 
 			"};\n"; 
 		
@@ -42,7 +43,6 @@ public class Shader3D {
 				"};";
 	
 	public Shader3D() {
-		
 		program = new ShaderProgram();
 		program.create(v_shader.toString(), f_shader.toString());
 		program.use();

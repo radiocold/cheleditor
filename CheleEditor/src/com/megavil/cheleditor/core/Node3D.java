@@ -17,12 +17,13 @@ public class Node3D extends Node {
 	
 	protected Matrix4f matrix;
 	
-	protected boolean dirty = false;
+	protected boolean dirty = true;
 	
 	public Node3D() {
 		position = new Vector3f();
 		scale = new Vector3f(1 , 1, 1);
 		matrix = new Matrix4f();
+		quaternion = new Quaternionf();
 	}
 
 	public Vector3f getPosition() {
@@ -43,11 +44,20 @@ public class Node3D extends Node {
 		dirty = true;
 	}
 	
-	public void move(float vx , float vy , float vz) {
+	public void translate(float vx , float vy , float vz) {
 		this.position.add(vx, vy, vz);
 		dirty = true;
 	}
-		
+	
+	public void scaling(float vx , float vy , float vz) {
+		this.scale.add(vx, vy, vz);
+		dirty = true;
+	}
+	
+	public void addEulerAngleZ(float vz) {
+		setEulerAngleZ(getEulerAngleZ() + vz);
+	}
+	
 	public float getEulerAngleX() {
 		return eulerAngleX;
 	}
@@ -76,7 +86,7 @@ public class Node3D extends Node {
 	}
 	
 	private void updateQuaternionEuler() {
-		quaternion.rotateXYZ(eulerAngleX, eulerAngleY, eulerAngleZ);
+		quaternion.rotationXYZ(eulerAngleX, eulerAngleY, eulerAngleZ);
 		dirty = true;
 	}
 
@@ -106,12 +116,5 @@ public class Node3D extends Node {
 	
 	public Matrix4f getMatrix() {
 		return matrix;
-	}
-	
-	 @Override
-	public void render() {
-		for (ComponentNode component : components) {
-			component.render();
-		}
 	}
 }

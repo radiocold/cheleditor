@@ -388,7 +388,8 @@ public class Main {
 //		    System.out.println(m3.toString());
 		    
 		      
-		    f_buffer = m3.get(f_buffer);
+		    m3.get(f_buffer);
+		    
 		    glUniformMatrix3fv(u_model , false , f_buffer);
 		    
 		    

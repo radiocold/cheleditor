@@ -58,7 +58,6 @@ public class PoolMatrix4f implements AutoCloseable  {
 
 	@Override
 	public void close() {
-		System.out.println("Close Pool Matrix4f");
 		if (m_pushes.size() > 0) {
 			matrices.addAll(m_pushes);
 			for (Matrix4f m : m_pushes) {

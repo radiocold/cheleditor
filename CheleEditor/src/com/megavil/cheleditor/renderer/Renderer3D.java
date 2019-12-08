@@ -1,6 +1,6 @@
 package com.megavil.cheleditor.renderer;
 
-import static org.lwjgl.opengl.GL20.glUniform4fv;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.nio.FloatBuffer;
 
@@ -22,19 +22,22 @@ public class Renderer3D {
 	}
 	
 	public void render(CameraPerspective camera , Node3D node) {	
+		shader.use();
+		
 		try (MemoryStack stack = MemoryStack.stackPush()){
 			
-			FloatBuffer floatBuffer = stack.mallocFloat(16);
-			camera.getMatrixViewInv().get(floatBuffer);	
-			glUniform4fv(shader.getU_view(), floatBuffer);
+			FloatBuffer fbuffer = stack.mallocFloat(16);
+			camera.getMatrixViewInv().get(fbuffer);	
+			glUniformMatrix4fv(shader.getU_view(), false ,  fbuffer);
 			
-			camera.getMatrixPerspective().get(floatBuffer);
-			glUniform4fv(shader.getU_proj(), floatBuffer);
+			camera.getMatrixPerspective().get(fbuffer);
+
+			glUniformMatrix4fv(shader.getU_proj(), false ,  fbuffer);
 			
-			try (PoolMatrix4f matrixPool = PoolMatrix4f.instance()) {
+			try (PoolMatrix4f pool = PoolMatrix4f.instance()) {
 				
-				Matrix4f matrixCombined = matrixPool.push();
-				renderNode3D((Node3D)node, matrixCombined , floatBuffer , matrixPool);
+				Matrix4f matrixCombined = pool.push();
+				renderNode3D((Node3D)node, matrixCombined , fbuffer , pool);
 			}
 		}
 	}
@@ -49,7 +52,8 @@ public class Renderer3D {
 		
 		matrixCombined.mul(m);
 		matrixCombined.get(buffer);
-		glUniform4fv(shader.getU_model(), buffer);
+
+		glUniformMatrix4fv(shader.getU_model(), false, buffer);
 		
 		node.render();
 		

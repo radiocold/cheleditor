@@ -1,4 +1,4 @@
-package com.megavil.cheleditor.mesh;
+package com.megavil.cheleditor.component;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -12,8 +12,11 @@ import org.lwjgl.system.MemoryStack;
 import com.megavil.cheleditor.core.ComponentNode;
 import com.megavil.cheleditor.core.Geometry;
 import com.megavil.cheleditor.material.Material3D;
-
-public class Mesh3D extends ComponentNode  {
+/*
+ * Mesh3D permite rendirizar un objeto 3D
+ * 
+ * */
+public class MeshRender3D extends ComponentNode  {
 	
 	private int vao;
 	private int vboPosition;
@@ -22,7 +25,7 @@ public class Mesh3D extends ComponentNode  {
 	private Geometry geometry;
 	private Material3D material;
 	
-	public Mesh3D(Geometry _geometry , Material3D _material) {
+	public MeshRender3D(Geometry _geometry , Material3D _material) {
 		geometry = _geometry;
 		material = _material;
 		create();
@@ -33,6 +36,8 @@ public class Mesh3D extends ComponentNode  {
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
 		
+		// Create VAO
+		
 		try (MemoryStack stack = MemoryStack.stackPush()){
 			
 			FloatBuffer position_buffer = stack.mallocFloat(geometry.getVertices().length);
@@ -41,11 +46,10 @@ public class Mesh3D extends ComponentNode  {
 			
 			vboPosition = glGenBuffers();
 			glBindBuffer(GL_ARRAY_BUFFER , vboPosition);
-			glBufferData(GL_ARRAY_BUFFER , position_buffer , GL_DYNAMIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER , position_buffer , GL_STATIC_DRAW);
 			
 		    glVertexAttribPointer(material.getShader3D().getIn_position(), 3, GL_FLOAT, false, 0, 0);
 			glEnableVertexAttribArray( material.getShader3D().getIn_position() );
-			
 			
 			FloatBuffer color_buffer = stack.mallocFloat(geometry.getColors().length);
 			color_buffer.put(geometry.getColors());
@@ -53,7 +57,7 @@ public class Mesh3D extends ComponentNode  {
 			
 			vboColors = glGenBuffers();
 			glBindBuffer(GL_ARRAY_BUFFER , vboColors);
-			glBufferData(GL_ARRAY_BUFFER , color_buffer , GL_DYNAMIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER , color_buffer , GL_STATIC_DRAW);
 			
 		    glVertexAttribPointer(material.getShader3D().getIn_color(), 3, GL_FLOAT, false, 0, 0);
 			glEnableVertexAttribArray(material.getShader3D().getIn_color() );
@@ -63,8 +67,10 @@ public class Mesh3D extends ComponentNode  {
 	
 	@Override 
 	public void render() {
+		
 		glBindVertexArray(vao);
 		glDrawArrays(GL_TRIANGLES, 0, geometry.getVertices().length);
+		
 		if (material.isShowWireframe()) {
 			glDrawArrays(GL_LINE_LOOP, 0, geometry.getVertices().length);
 		}
