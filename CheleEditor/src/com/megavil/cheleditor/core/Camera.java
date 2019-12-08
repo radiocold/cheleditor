@@ -2,7 +2,7 @@ package com.megavil.cheleditor.core;
 
 import org.joml.Matrix4f;
 
-public class Camera extends Node3D {
+public class Camera extends Node3 {
 	
 	protected Matrix4f mView;
 	protected Matrix4f mViewInv;

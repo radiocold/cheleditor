@@ -2,21 +2,21 @@ package com.megavil.cheleditor.material;
 
 import org.joml.Vector3f;
 
-import com.megavil.cheleditor.shader.Shader3D;
+import com.megavil.cheleditor.shader.Shader;
 
-public class Material3D {
+public class Material {
 	
 	private float alpha;
 	private boolean visible;
 	private boolean showWireframe;	
 	private Vector3f colorWireframe;
-	private Shader3D shader3D;
+	private Shader shader;
 	
-	public Material3D() {
+	public Material() {
 	}
 	
-	public Material3D(Shader3D _shader) {
-		shader3D = _shader;
+	public Material(Shader _shader) {
+		shader = _shader;
 	}
 
 	public float getAlpha() {
@@ -43,8 +43,8 @@ public class Material3D {
 		this.showWireframe = showWireframe;
 	}
 
-	public Shader3D getShader3D() {
-		return shader3D;
+	public Shader getShader() {
+		return shader;
 	}
 
 	public Vector3f getColorWireframe() {

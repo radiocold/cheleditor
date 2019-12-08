@@ -9,7 +9,7 @@ import com.megavil.cheleditor.core.ShaderProgram;
  * @author Martin
  *
  */
-public class Shader3D {
+public class Shader {
 	
 	protected ShaderProgram program;
 	
@@ -42,7 +42,7 @@ public class Shader3D {
 				"  frag_colour = vec4 (o_color.x, o_color.y, o_color.z, 1.0);\n" + 
 				"};";
 	
-	public Shader3D() {
+	public Shader() {
 		program = new ShaderProgram();
 		program.create(v_shader.toString(), f_shader.toString());
 		program.use();

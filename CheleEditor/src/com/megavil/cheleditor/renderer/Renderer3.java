@@ -9,19 +9,19 @@ import org.lwjgl.system.MemoryStack;
 
 import com.megavil.cheleditor.core.CameraPerspective;
 import com.megavil.cheleditor.core.Node;
-import com.megavil.cheleditor.core.Node3D;
+import com.megavil.cheleditor.core.Node3;
 import com.megavil.cheleditor.core.PoolMatrix4f;
-import com.megavil.cheleditor.shader.Shader3D;
+import com.megavil.cheleditor.shader.Shader;
 
-public class Renderer3D {
+public class Renderer3 {
 	
-	private Shader3D shader;
+	private Shader shader;
 		
-	public Renderer3D(Shader3D _shader) {
+	public Renderer3(Shader _shader) {
 		shader = _shader;
 	}
 	
-	public void render(CameraPerspective camera , Node3D node) {	
+	public void render(CameraPerspective camera , Node3 node) {	
 		shader.use();
 		
 		try (MemoryStack stack = MemoryStack.stackPush()){
@@ -35,14 +35,13 @@ public class Renderer3D {
 			glUniformMatrix4fv(shader.getU_proj(), false ,  fbuffer);
 			
 			try (PoolMatrix4f pool = PoolMatrix4f.instance()) {
-				
 				Matrix4f matrix_parent = pool.push();
-				renderNode3D((Node3D)node, matrix_parent, fbuffer , pool);
+				renderNode3((Node3)node, matrix_parent, fbuffer , pool);
 			}
 		}
 	}
 	
-	protected void renderNode3D(Node3D node , Matrix4f matrix_parent , FloatBuffer buffer , PoolMatrix4f mpool) {
+	protected void renderNode3(Node3 node , Matrix4f matrix_parent , FloatBuffer buffer , PoolMatrix4f mpool) {
 		Matrix4f m = node.getMatrix();
 		
 		if (node.isDirty()) {
@@ -61,12 +60,12 @@ public class Renderer3D {
 		node.render();
 		
 		for (Node child : node.getChilds()) {
-			Node3D child3D = (Node3D)child;
-			renderNode3D( child3D , mcombined , buffer , mpool);
+			Node3 child3D = (Node3)child;
+			renderNode3( child3D , mcombined , buffer , mpool);
 		}
 	}
 	
 	public void clear() {
-		
+		shader = null;
 	}
 }

@@ -4,7 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class Node3D extends Node {
+public class Node3 extends Node {
 
 	protected Vector3f position;
 	protected Vector3f scale;
@@ -12,14 +12,14 @@ public class Node3D extends Node {
 	protected float eulerAngleX;
 	protected float eulerAngleY;
 	protected float eulerAngleZ;
-
+	
 	protected Quaternionf quaternion;
 	
 	protected Matrix4f matrix;
 	
 	protected boolean dirty = true;
 	
-	public Node3D() {
+	public Node3() {
 		position = new Vector3f();
 		scale = new Vector3f(1 , 1, 1);
 		matrix = new Matrix4f();

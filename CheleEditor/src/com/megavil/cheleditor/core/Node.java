@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Node {
 	
 	protected ArrayList<Node> childs = new ArrayList<>();
-	protected ArrayList<ComponentNode> components = new ArrayList<>();
+	protected Model model = null;
 	
 	protected Node parent;
 
@@ -20,18 +20,7 @@ public class Node {
 		childs.remove(child);
 	}
 	
-	public ComponentNode addComponent(ComponentNode component) {
-		components.add(component);
-		return component;
-	}
-	
-	
-	public void removeComponent(ComponentNode component) {
-		components.remove(component);
-	}
-	
 	public void update(float dt) {
-		
 	}
 	
 	public void clear() {
@@ -39,19 +28,11 @@ public class Node {
 			node.clear();
 		});
 		childs = null;
-		
-		components.forEach(component -> {
-			component.clear();
-		});
-		components = null;
+		model = null;
 	}
 
 	public ArrayList<Node> getChilds() {
 		return childs;
-	}
-
-	public ArrayList<ComponentNode> getComponents() {
-		return components;
 	}
 
 	public Node getParent() {
@@ -62,9 +43,17 @@ public class Node {
 		this.parent = parent;
 	}
 	
+	public Model getRender() {
+		return model;
+	}
+
+	public void setModel(Model model) {
+		this.model = model;
+	}
+
 	public void render() {
-		for (ComponentNode component : components) {
-			component.render();
+		if (model != null) {
+			model.render();
 		}
 	}
 }

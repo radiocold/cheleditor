@@ -1,28 +1,25 @@
 package com.megavil.cheleditor;
 
 import java.util.ArrayList;
-
-import org.lwjgl.system.MathUtil;
-
-import com.megavil.cheleditor.component.MeshRender3D;
 import com.megavil.cheleditor.core.CameraPerspective;
 import com.megavil.cheleditor.core.Geometry;
-import com.megavil.cheleditor.core.Node3D;
-import com.megavil.cheleditor.material.Material3D;
-import com.megavil.cheleditor.renderer.Renderer3D;
-import com.megavil.cheleditor.shader.Shader3D;
+import com.megavil.cheleditor.core.Node3;
+import com.megavil.cheleditor.material.Material;
+import com.megavil.cheleditor.model.Mesh;
+import com.megavil.cheleditor.renderer.Renderer3;
+import com.megavil.cheleditor.shader.Shader;
 
 public class Scene {
 	
-	protected Node3D stage;
-	protected Renderer3D renderer3D;
-	protected Shader3D shader3D;
-	protected Material3D material3D;
+	protected Node3 stage;
+	protected Renderer3 renderer3;
+	protected Shader shader;
+	protected Material material;
 	
-	protected CameraPerspective camera3D;
+	protected CameraPerspective cameraPerspective;
 	
 	// Game Nodes
-	private ArrayList<Node3D> nodes = new ArrayList<Node3D>();
+	private ArrayList<Node3> nodes = new ArrayList<Node3>();
 	
 	public Scene() {
 		OnConfigShadersMaterials();
@@ -32,22 +29,22 @@ public class Scene {
 	}
 	
 	protected void OnConfigShadersMaterials() {
-		shader3D = new Shader3D();
+		shader = new Shader();
 		
-		material3D = new Material3D(shader3D);
-		material3D.setAlpha(1);
-		material3D.setShowWireframe(false);
+		material = new Material(shader);
+		material.setAlpha(1);
+		material.setShowWireframe(false);
 	}
 	
 	
 	protected void OnConfigRenderer() {
-		stage = new Node3D();
-		renderer3D = new Renderer3D(shader3D);
+		stage = new Node3();
+		renderer3 = new Renderer3(shader);
 	}
 	
 	protected void OnConfigNodes() {
-		camera3D = new CameraPerspective(57.0f * (float)Math.PI / 180.0f, 1024.0f/768.0f, 0.1f, 100.0f);
-		camera3D.translate(0, 0, 5.0f);
+		cameraPerspective = new CameraPerspective(57.0f * (float)Math.PI / 180.0f, 1024.0f/768.0f, 0.1f, 100.0f);
+		cameraPerspective.translate(0, 0, 5.0f);
 	}
 	
 	public void create() {
@@ -60,11 +57,11 @@ public class Scene {
 									    0.0f , 1.0f , 0,
 									    0.0f , 0.0f , 1.0f});
 		
-		MeshRender3D mesh = new MeshRender3D(geometry, material3D);
+		Mesh mesh = new Mesh(geometry, material);
 		
 		for (int i = 0; i < 1000; i++) {
-			Node3D node = new Node3D();
-			node.addComponent(mesh);
+			Node3 node = new Node3();
+			node.setModel(mesh);
 			node.translate(-10.0f + (float)Math.random() * 25.0f , 0 , 0);
 			node.scaling((float)Math.random(), (float)Math.random(), 1);
 			nodes.add(node);
@@ -74,25 +71,25 @@ public class Scene {
 	}
 	
 	public void resize(int width , int height) {
-		camera3D.setAspectRatio((width * 1.0f) / (height * 1.0f));
+		cameraPerspective.setAspectRatio((width * 1.0f) / (height * 1.0f));
 	}
 	
 	public void update(float dt) {
 		for (int i = 0; i < 1000; i++) {
-			Node3D node = nodes.get(i);
+			Node3 node = nodes.get(i);
 			node.translate(-0.01f, 0 , 0);
 			node.addEulerAngleZ(0.01f);
 		}
 	}
 	
 	public void render() {
-		renderer3D.render(camera3D, stage);
+		renderer3.render(cameraPerspective, stage);
 	}
 	
 	public void clear() {
-		shader3D.clear();
+		shader.clear();
 		stage.clear();
-		renderer3D.clear();
+		renderer3.clear();
 	}
 	
 
