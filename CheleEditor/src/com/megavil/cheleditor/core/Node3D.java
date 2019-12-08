@@ -97,6 +97,7 @@ public class Node3D extends Node {
 	}
 	
 	public Matrix4f getCalculateModelMatrix() {
+		matrix.identity();
 		matrix.translate(getPosition());
 		matrix.rotate(getQuaternion());
 		matrix.scale(getScale());

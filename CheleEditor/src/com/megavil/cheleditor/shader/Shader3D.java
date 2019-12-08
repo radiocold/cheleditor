@@ -83,5 +83,11 @@ public class Shader3D {
 	public int getU_proj() {
 		return u_proj;
 	}
+	
+	public void clear() {
+		program.clear();
+		program = null;
+	}
+	
 
 }

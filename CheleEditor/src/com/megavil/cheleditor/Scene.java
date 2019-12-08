@@ -19,6 +19,9 @@ public class Scene {
 	
 	protected CameraPerspective camera3D;
 	
+	// Game Nodes
+	private Node3D nodeTriangle = null;
+	
 	
 	public Scene() {
 		OnConfigShadersMaterials();
@@ -48,8 +51,8 @@ public class Scene {
 	
 	
 	public void create() {
-		
-		Node3D nodeTriangle = new Node3D();
+		/* Creando un Triangulo con Colores */ 
+		nodeTriangle = new Node3D();
 		
 		Geometry geometry = new Geometry();
 		geometry.setVertices(new float[] {0    ,  0.5f , 0,
@@ -68,7 +71,9 @@ public class Scene {
 	}
 	
 	public void update(float dt) {
-		
+		if (nodeTriangle != null) {
+			nodeTriangle.move(0.01f, 0.0f, 0.0f);
+		}
 	}
 	
 	public void render() {
@@ -76,7 +81,7 @@ public class Scene {
 	}
 	
 	public void clear() {
-		
+		shader3D.clear();
 		stage.clear();
 		renderer3D.clear();
 	}
