@@ -11,7 +11,10 @@ public class Material {
 	private Shader3D shader3D;
 	
 	public Material() {
-		shader3D = new Shader3D();
+	}
+	
+	public Material(Shader3D _shader) {
+		shader3D = _shader;
 	}
 
 	public float getAlpha() {

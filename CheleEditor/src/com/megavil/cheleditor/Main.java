@@ -296,6 +296,7 @@ public class Main {
 			
 			//vboVertices = glGenBuffers();
 			 vboVertices = glGenBuffers();
+			 
 			glBindBuffer(GL_ARRAY_BUFFER , vboVertices);
 			glBufferData(GL_ARRAY_BUFFER , point_buffer , GL_DYNAMIC_DRAW);
 			

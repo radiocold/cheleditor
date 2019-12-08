@@ -16,6 +16,4 @@ public class CameraPerspective extends Camera {
 		return mPerspective;
 	}
 	
-
-	
 }

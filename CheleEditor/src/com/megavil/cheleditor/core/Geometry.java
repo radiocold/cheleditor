@@ -1,4 +1,5 @@
 package com.megavil.cheleditor.core;
+import static org.lwjgl.opengl.GL30.*;
 
 public class Geometry {
 	
@@ -13,7 +14,7 @@ public class Geometry {
 		indices = _indices;
 		uvs = _uvs;
 	}
-	
+
 	public boolean hasIndices() {
 		return (indices.length > 0);
 	}
