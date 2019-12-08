@@ -58,4 +58,8 @@ public class Renderer3D {
 			renderNode3D( child3D , matrixCombined , buffer , matrixPool);
 		}
 	}
+	
+	public void clear() {
+		
+	}
 }

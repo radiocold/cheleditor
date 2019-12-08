@@ -76,7 +76,7 @@ public class ShaderProgram {
 		glUseProgram(m_programID);
 	}
 	
-	public void free() {
+	public void clear() {
 		glDeleteProgram(m_programID);
 		m_programID = -1;
 	}

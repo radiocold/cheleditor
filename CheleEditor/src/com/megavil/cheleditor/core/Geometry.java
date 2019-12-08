@@ -7,6 +7,10 @@ public class Geometry {
 	protected float[] indices;
 	protected float[] uvs;
 	
+	public Geometry() {
+		
+	}
+	
 	public Geometry(float[] _vertices , float[] _colors ,  float[] _indices , float[] _uvs) {
 		vertices = _vertices;
 		colors = _colors;
