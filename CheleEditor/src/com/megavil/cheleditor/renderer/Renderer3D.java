@@ -13,12 +13,12 @@ import com.megavil.cheleditor.core.Node3D;
 import com.megavil.cheleditor.core.PoolMatrix4f;
 import com.megavil.cheleditor.shader.Shader3D;
 
-public class RenderShader3D {
+public class Renderer3D {
 	
 	private Shader3D shader;
 		
-	public RenderShader3D() {
-		shader = new Shader3D();
+	public Renderer3D(Shader3D _shader) {
+		shader = _shader;
 	}
 	
 	public void render(CameraPerspective camera , Node3D node) {	
@@ -48,18 +48,14 @@ public class RenderShader3D {
 		}
 		
 		matrixCombined.mul(m);
-	
-		draw( node , matrixCombined , buffer);
+		matrixCombined.get(buffer);
+		glUniform4fv(shader.getU_model(), buffer);
+		
+		node.render();
 		
 		for (Node child : node.getChilds()) {
 			Node3D child3D = (Node3D)child;
 			renderNode3D( child3D , matrixCombined , buffer , matrixPool);
 		}
-	}
-	
-	protected void draw(Node3D node , Matrix4f matrix , FloatBuffer buffer) 
-	{
-		matrix.get(buffer);
-		glUniform4fv(shader.getU_model(), buffer);
 	}
 }

@@ -107,6 +107,10 @@ public class Node3D extends Node {
 		return matrix;
 	}
 	
-	
-
+	 @Override
+	public void render() {
+		for (ComponentNode component : components) {
+			component.render();
+		}
+	}
 }

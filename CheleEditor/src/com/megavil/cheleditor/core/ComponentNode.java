@@ -6,6 +6,14 @@ public class ComponentNode {
 		
 	}
 	
+	public void create() {
+		
+	}
+	
+	public void render() {
+		
+	}
+	
 	public void clear() {
 		
 	}
