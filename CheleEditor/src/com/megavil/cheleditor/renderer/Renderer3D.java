@@ -36,13 +36,13 @@ public class Renderer3D {
 			
 			try (PoolMatrix4f pool = PoolMatrix4f.instance()) {
 				
-				Matrix4f matrixCombined = pool.push();
-				renderNode3D((Node3D)node, matrixCombined , fbuffer , pool);
+				Matrix4f matrix_parent = pool.push();
+				renderNode3D((Node3D)node, matrix_parent, fbuffer , pool);
 			}
 		}
 	}
 	
-	protected void renderNode3D(Node3D node , Matrix4f matrixCombined , FloatBuffer buffer , PoolMatrix4f matrixPool) {
+	protected void renderNode3D(Node3D node , Matrix4f matrix_parent , FloatBuffer buffer , PoolMatrix4f mpool) {
 		Matrix4f m = node.getMatrix();
 		
 		if (node.isDirty()) {
@@ -50,8 +50,11 @@ public class Renderer3D {
 			node.setDirty(false);
 		}
 		
-		matrixCombined.mul(m);
-		matrixCombined.get(buffer);
+		Matrix4f mcombined = mpool.push();
+		matrix_parent.get(mcombined);
+		
+		mcombined.mul(m);
+		mcombined.get(buffer);
 
 		glUniformMatrix4fv(shader.getU_model(), false, buffer);
 		
@@ -59,7 +62,7 @@ public class Renderer3D {
 		
 		for (Node child : node.getChilds()) {
 			Node3D child3D = (Node3D)child;
-			renderNode3D( child3D , matrixCombined , buffer , matrixPool);
+			renderNode3D( child3D , mcombined , buffer , mpool);
 		}
 	}
 	

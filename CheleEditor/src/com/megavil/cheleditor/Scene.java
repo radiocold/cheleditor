@@ -2,7 +2,7 @@ package com.megavil.cheleditor;
 
 import java.util.ArrayList;
 
-import org.joml.Math;
+import org.lwjgl.system.MathUtil;
 
 import com.megavil.cheleditor.component.MeshRender3D;
 import com.megavil.cheleditor.core.CameraPerspective;
@@ -23,7 +23,7 @@ public class Scene {
 	
 	// Game Nodes
 	private Node3D nodeTriangle = null;
-	private ArrayList<Node3D> nodes = new ArrayList();
+	private ArrayList<Node3D> nodes = new ArrayList<Node3D>();
 	
 	public Scene() {
 		OnConfigShadersMaterials();
@@ -68,31 +68,25 @@ public class Scene {
 		
 		MeshRender3D mesh = new MeshRender3D(geometry, material3D);
 		
-		nodeTriangle.addComponent(mesh);
-		stage.addChild(nodeTriangle);
-		
-		
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 1000; i++) {
 			Node3D node = new Node3D();
 			node.addComponent(mesh);
-			node.translate(i * 0.01f , 0 , 0);
+			node.translate((float)Math.random() * 15.0f , 0 , 0);
 			nodes.add(node);
 			stage.addChild(node);
 		}
 		
 	}
 	
+	public void resize(int width , int height) {
+		camera3D.setAspectRatio((width * 1.0f) / (height * 1.0f));
+	}
+	
 	public void update(float dt) {
-		if (nodeTriangle != null) {
-			nodeTriangle.translate(0.01f, 0.0f, 0.0f);
-			//nodeTriangle.scaling(0.1f, 0.1f, 0.0f);
-		// 	nodeTriangle.addEulerAngleZ(0.01f);
-		}
-		
-		
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 1000; i++) {
 			Node3D node = nodes.get(i);
 			node.translate(-0.01f, 0 , 0);
+			node.addEulerAngleZ(0.01f);
 		}
 	}
 	

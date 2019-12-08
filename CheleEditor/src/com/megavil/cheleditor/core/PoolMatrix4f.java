@@ -18,31 +18,35 @@ public class PoolMatrix4f implements AutoCloseable  {
 	private ArrayList<Matrix4f> matrices;
 	private ArrayList<Matrix4f> m_pushes;
 	private int m_chunk;
+	private int m_capacity;
 	
 	public PoolMatrix4f() {
-		this(50);
+		this(100);
 	}
 	
-	public PoolMatrix4f(int chunk) {
+	public PoolMatrix4f(int capacity) {
 		matrices = new ArrayList<Matrix4f>();
 		m_pushes = new ArrayList<Matrix4f>();
-		m_chunk = chunk;
-		createChunk();
+		m_capacity = capacity;
+		m_chunk = 20;
+		createObjects(m_capacity);
 	}
 	
-	private void createChunk() {
-		for (int i = 0; i < m_chunk; i++) {
+	private void createObjects(int amount) {
+		for (int i = 0; i < amount; i++) {
 			matrices.add(new Matrix4f());
 		}
 	}
 	
 	public Matrix4f push() {
-		if (matrices.size() == 0) {
-			createChunk();
+		int size = matrices.size();
+		if (size == 0) {
+			createObjects(m_chunk);
+			size = m_chunk;
 		}
-		Matrix4f m = matrices.get(matrices.size() - 1);
+		int index = size - 1;
+		Matrix4f m = matrices.remove(index);
 		m_pushes.add(m);
-		matrices.remove(m);
 		return m;
 	}
 	
@@ -58,7 +62,8 @@ public class PoolMatrix4f implements AutoCloseable  {
 
 	@Override
 	public void close() {
-		if (m_pushes.size() > 0) {
+		int count_pushes = m_pushes.size();
+		if (count_pushes > 0) {
 			matrices.addAll(m_pushes);
 			for (Matrix4f m : m_pushes) {
 				m.identity();
@@ -66,5 +71,4 @@ public class PoolMatrix4f implements AutoCloseable  {
 			m_pushes.clear();
 		}
 	}
-	
 }

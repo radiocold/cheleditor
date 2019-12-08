@@ -45,12 +45,15 @@ import static org.lwjgl.opengl.GL11.glGetString;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.nio.IntBuffer;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
@@ -60,6 +63,9 @@ public class Application {
 	private long window;
 	
 	private Scene scene;
+	
+	private int wWidth = 1024;
+	private int wHeight = 768;
 
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -92,7 +98,7 @@ public class Application {
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 		
-		glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
+		glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
 		glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
 		
 		glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
@@ -140,8 +146,6 @@ public class Application {
 		// Make the window visible
 		glfwShowWindow(window);
 		
-		
-		
 	}
 
 	private void loop() {
@@ -164,12 +168,24 @@ public class Application {
 		glClearColor(0.0f, 1.0f, 0.0f, 0.0f);
 		scene = new Scene();
 		
+		
+		var  windowSizeCallback = new GLFWWindowSizeCallback() {
+		    @Override
+		    public void invoke(long argWindow, int argWidth, int argHeight) {
+		    	wWidth  = argWidth;
+		    	wHeight = argHeight;
+		    	scene.resize(argWidth, argHeight);
+		    }
+		};
+			  
+		glfwSetWindowSizeCallback(window, windowSizeCallback);
+		
 		while ( !glfwWindowShouldClose(window) )
 		{
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 			
-			glViewport( 0, 0, 1024, 768 );
+			glViewport( 0, 0, wWidth, wHeight );
 			
 			int state = glfwGetKey(window, GLFW_KEY_E);
 			if (state == GLFW_PRESS) {
