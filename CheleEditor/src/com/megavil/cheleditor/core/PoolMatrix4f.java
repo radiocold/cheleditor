@@ -21,14 +21,14 @@ public class PoolMatrix4f implements AutoCloseable  {
 	private int m_capacity;
 	
 	public PoolMatrix4f() {
-		this(100);
+		this(1000);
 	}
 	
 	public PoolMatrix4f(int capacity) {
 		matrices = new ArrayList<Matrix4f>();
 		m_pushes = new ArrayList<Matrix4f>();
 		m_capacity = capacity;
-		m_chunk = 20;
+		m_chunk = 10;
 		createObjects(m_capacity);
 	}
 	

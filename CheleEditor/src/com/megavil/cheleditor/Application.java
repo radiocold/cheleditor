@@ -66,8 +66,8 @@ public class Application {
 	
 	private int wWidth;
 	private int wHeight;
-	private static final int WIDTH_WINDOW  = 1024;
-	private static final int HEIGHT_WINDOW = 768;
+	public static final int WIDTH_WINDOW  = 1024;
+	public static final int HEIGHT_WINDOW = 768;
 	
 	GLFWVidMode vidmode;
 	private long monitor;
@@ -220,6 +220,8 @@ public class Application {
 			// invoked during this call.
 			glfwPollEvents();
 		}
+		
+		scene.clear();
 	}
 	
 	private void OnFullScreen() {
