@@ -1,7 +1,7 @@
 package com.megavil.cheleditor.shader;
 
-import static org.lwjgl.opengl.GL20.*;
-import org.lwjgl.opengl.GL;
+import static org.lwjgl.opengl.GL20.glGetAttribLocation;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 
 import com.megavil.cheleditor.core.ShaderProgram;
 /**

@@ -54,6 +54,21 @@ public class Node3 extends Node {
 		dirty = true;
 	}
 	
+	public void translateX(float vx) {
+		this.position.x += vx;
+		dirty = true;
+	}
+	
+	public void translateY(float vy) {
+		this.position.x += vy;
+		dirty = true;
+	}
+	
+	public void translateZ(float vz) {
+		this.position.z += vz;
+		dirty = true;
+	}
+	
 	public void addEulerAngleZ(float vz) {
 		setEulerAngleZ(getEulerAngleZ() + vz);
 	}

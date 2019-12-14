@@ -1,6 +1,7 @@
 package com.megavil.cheleditor;
 
 import java.util.ArrayList;
+
 import com.megavil.cheleditor.core.CameraPerspective;
 import com.megavil.cheleditor.core.Geometry;
 import com.megavil.cheleditor.core.Model;
@@ -9,8 +10,6 @@ import com.megavil.cheleditor.material.Material;
 import com.megavil.cheleditor.model.Mesh;
 import com.megavil.cheleditor.renderer.Renderer3;
 import com.megavil.cheleditor.shader.Shader;
-import static org.lwjgl.stb.STBEasyFont.*;
-import org.lwjgl.*;
 
 public class Scene {
 	
@@ -64,21 +63,28 @@ public class Scene {
 	
 	public void create() {
 		Geometry geometry = new Geometry();
-		geometry.setVertices(new float[] {0    ,  0.5f , 0,
+		geometry.setVertices(new float[] {0.5f ,  0.5f , 0,
 										 -0.5f , -0.5f , 0,
-										  0.5f , -0.5f , 0});
+										  0.5f , -0.5f , 0,
+										  
+										  0.5f ,  0.5f , 0,
+									     -0.5f , -0.5f , 0,
+										 -0.5f , 0.5f , 0});
 		
 		geometry.setColors(new float[] {1.0f,  0.0f , 0,
+									    0.0f , 1.0f , 0,
+									    0.0f , 0.0f , 1.0f,
+									    1.0f,  0.0f , 0,
 									    0.0f , 1.0f , 0,
 									    0.0f , 0.0f , 1.0f});
 		
 		Mesh mesh = new Mesh(geometry, material);
 		models.add(mesh);
 		
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 50000; i++) {
 			Node3 node = new Node3();
 			node.setModel(mesh);
-			node.translate(-10.0f + (float)Math.random() * 25.0f , 0 , 0);
+			node.translate(-10.0f + (float)Math.random() * 25.0f , -10.0f + (float)Math.random() * 25.0f  , 0);
 			node.scaling((float)Math.random(), (float)Math.random(), 1);
 			nodes.add(node);
 			stage.addChild(node);
@@ -119,8 +125,8 @@ public class Scene {
      */
     public void updateFPS() {
         if (getTime() - lastFPS > 1000) {
-            // Display.setTitle("FPS: " + fps);
-            System.out.println("FPS " + fps);
+           // Display.setTitle("FPS: " + fps);
+             System.out.println("FPS " + fps);
             fps = 0;
             lastFPS += 1000;
         }
@@ -128,12 +134,12 @@ public class Scene {
     }
 	
 	public void update(float dt) {
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 50000; i++) {
 			Node3 node = nodes.get(i);
-			node.translate(-0.01f, 0 , 0);
+			node.translateX(-0.01f);
 			node.addEulerAngleZ(0.01f);
 		}
-		updateFPS();
+		 updateFPS();
 	}
 	
 	public void render() {

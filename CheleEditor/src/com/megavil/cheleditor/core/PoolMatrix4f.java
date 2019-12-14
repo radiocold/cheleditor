@@ -11,6 +11,7 @@ public class PoolMatrix4f implements AutoCloseable  {
 	public static PoolMatrix4f instance() {
 		if (i == null) {
 			i = new PoolMatrix4f();
+			System.out.println("create pool");
 		}
 		return i;
 	}
@@ -21,7 +22,7 @@ public class PoolMatrix4f implements AutoCloseable  {
 	private int m_capacity;
 	
 	public PoolMatrix4f() {
-		this(1000);
+		this(100);
 	}
 	
 	public PoolMatrix4f(int capacity) {

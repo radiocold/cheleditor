@@ -5,8 +5,9 @@ import static org.lwjgl.opengl.GL20.*;
 import java.nio.FloatBuffer;
 
 import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.system.MemoryStack;
-
+import org.lwjgl.system.MemoryUtil;
 import com.megavil.cheleditor.core.CameraPerspective;
 import com.megavil.cheleditor.core.Node;
 import com.megavil.cheleditor.core.Node3;
@@ -16,28 +17,38 @@ import com.megavil.cheleditor.shader.Shader;
 public class Renderer3 {
 	
 	private Shader shader;
-		
+	// MemoryStack stack;
+	FloatBuffer fbuffer;
+	
 	public Renderer3(Shader _shader) {
 		shader = _shader;
+		
+		try (MemoryStack stack = MemoryStack.stackPush()){
+			fbuffer = stack.mallocFloat(16);
+		}
 	}
 	
 	public void render(CameraPerspective camera , Node3 node) {	
 		shader.use();
-		
-		try (MemoryStack stack = MemoryStack.stackPush()){
-			
-			FloatBuffer fbuffer = stack.mallocFloat(16);
-			camera.getMatrixViewInv().get(fbuffer);	
-			glUniformMatrix4fv(shader.getU_view(), false ,  fbuffer);
-			
-			camera.getMatrixPerspective().get(fbuffer);
 
-			glUniformMatrix4fv(shader.getU_proj(), false ,  fbuffer);
+		try (PoolMatrix4f pool = PoolMatrix4f.instance()) {
 			
-			try (PoolMatrix4f pool = PoolMatrix4f.instance()) {
-				Matrix4f matrix_parent = pool.push();
-				renderNode3((Node3)node, matrix_parent, fbuffer , pool);
+			Matrix4f m = camera.getMatrix();
+			if (camera.isDirty()) {
+				m = camera.getCalculateModelMatrix();
+				camera.setDirty(false);
 			}
+			
+			Matrix4f m_inv = pool.push();
+			m.invert(m_inv);
+			m_inv.get(fbuffer);
+			glUniformMatrix4fv(shader.getU_view(), false ,  fbuffer);
+
+			camera.getMatrixPerspective().get(fbuffer);
+			glUniformMatrix4fv(shader.getU_proj(), false ,  fbuffer);
+
+			Matrix4f matrix_parent = pool.push();
+			renderNode3((Node3)node, matrix_parent, fbuffer , pool);
 		}
 	}
 	
@@ -56,6 +67,9 @@ public class Renderer3 {
 		mcombined.get(buffer);
 
 		glUniformMatrix4fv(shader.getU_model(), false, buffer);
+		
+		//Remove the last matrix4f used
+		mpool.pop();
 		
 		node.render();
 		
