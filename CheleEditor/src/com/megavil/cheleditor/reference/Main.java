@@ -38,6 +38,7 @@ import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_RENDERER;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
@@ -396,8 +397,8 @@ public class Main {
 		    
 		    
 			/* draw points 0-3 from the currently bound VAO with current in-use shader */
-			 glDrawArrays(GL_LINE_LOOP, 0, 3);
-		    // glDrawElements(GL_TRIANGLES , 6 , GL_UNSIGNED_SHORT , 0);
+			//  glDrawArrays(GL_LINE_LOOP, 0, 3);
+		    glDrawArrays(GL_TRIANGLES , 0 , 3);
 		     
 			glfwSwapBuffers(window); // swap the color buffers
 

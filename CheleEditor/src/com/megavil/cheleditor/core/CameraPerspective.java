@@ -13,12 +13,12 @@ public class CameraPerspective extends Camera {
 	public CameraPerspective(float _fovy , float _aspect , float _near , float _far) {
 		super();
 		mPerspective = new Matrix4f();
-		mPerspective.perspective(_fovy, _aspect, _near, _far);
-		
 		fovy = _fovy;
 		aspect = _aspect;
 		near = _near;
 		far = _far;
+		
+		mPerspective.perspective(fovy, aspect, near, far);
 	}
 	
 	public Matrix4f getMatrixPerspective() {

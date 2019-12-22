@@ -52,7 +52,7 @@ public class Scene {
 	
 	protected void OnConfigRenderer() {
 		stage = new Node3();
-		renderer3 = new Renderer3(shader);
+		renderer3 = new Renderer3(shader); 
 	}
 	
 	protected void OnConfigNodes() {
@@ -63,20 +63,81 @@ public class Scene {
 	
 	public void create() {
 		Geometry geometry = new Geometry();
-		geometry.setVertices(new float[] {0.5f ,  0.5f , 0,
-										 -0.5f , -0.5f , 0,
-										  0.5f , -0.5f , 0,
-										  
-										  0.5f ,  0.5f , 0,
-									     -0.5f , -0.5f , 0,
-										 -0.5f , 0.5f , 0});
+//		geometry.setVertices(new float[] {0.5f ,  0.5f , 0,
+//										  0.5f , -0.5f , 0,
+//										 -0.5f , -0.5f , 0,
+//										 
+//										  
+//										  0.5f ,  0.5f , 0,
+//									     -0.5f , -0.5f , 0,
+//										 -0.5f , 0.5f , 0});
 		
-		geometry.setColors(new float[] {1.0f,  0.0f , 0,
-									    0.0f , 1.0f , 0,
-									    0.0f , 0.0f , 1.0f,
-									    1.0f,  0.0f , 0,
-									    0.0f , 1.0f , 0,
-									    0.0f , 0.0f , 1.0f});
+		 // Back face
+		geometry.setVertices(new float[] { -0.5f, -0.5f, -0.5f, // Bottom-left
+	     0.5f, -0.5f, -0.5f, // bottom-right    
+	     0.5f,  0.5f, -0.5f, // top-right              
+	     0.5f,  0.5f, -0.5f, // top-right
+	    -0.5f,  0.5f, -0.5f, // top-left
+	    -0.5f, -0.5f, -0.5f, // bottom-left                
+	    // Front face
+	    -0.5f, -0.5f,  0.5f, // bottom-left
+	     0.5f,  0.5f,  0.5f, // top-right
+	     0.5f, -0.5f,  0.5f, // bottom-right        
+	     0.5f,  0.5f,  0.5f, // top-right
+	    -0.5f, -0.5f,  0.5f, // bottom-left
+	    -0.5f,  0.5f,  0.5f, // top-left        
+	    // Left face
+	    -0.5f,  0.5f,  0.5f, // top-right
+	    -0.5f, -0.5f, -0.5f, // bottom-left
+	    -0.5f,  0.5f, -0.5f, // top-left       
+	    -0.5f, -0.5f, -0.5f, // bottom-left
+	    -0.5f,  0.5f,  0.5f, // top-right
+	    -0.5f, -0.5f,  0.5f, // bottom-right
+	    // Right face
+	     0.5f,  0.5f,  0.5f, // top-left
+	     0.5f,  0.5f, -0.5f, // top-right      
+	     0.5f, -0.5f, -0.5f, // bottom-right          
+	     0.5f, -0.5f, -0.5f, // bottom-right
+	     0.5f, -0.5f,  0.5f, // bottom-left
+	     0.5f,  0.5f,  0.5f, // top-left
+	    // Bottom face          
+	    -0.5f, -0.5f, -0.5f, // top-right
+	     0.5f, -0.5f,  0.5f, // bottom-left
+	     0.5f, -0.5f, -0.5f, // top-left        
+	     0.5f, -0.5f,  0.5f, // bottom-left
+	    -0.5f, -0.5f, -0.5f, // top-right
+	    -0.5f, -0.5f,  0.5f, // bottom-right
+	    // Top face
+	    -0.5f,  0.5f, -0.5f, // top-left
+	     0.5f,  0.5f, -0.5f, // top-right
+	     0.5f,  0.5f,  0.5f, // bottom-right                 
+	     0.5f,  0.5f,  0.5f, // bottom-right
+	    -0.5f,  0.5f,  0.5f, // bottom-left  
+	    -0.5f,  0.5f, -0.5f  // top-left   
+		});   
+		
+//		geometry.setColors(new float[] {1.0f,  0.0f , 0,
+//									    0.0f , 1.0f , 0,
+//									    0.0f , 0.0f , 1.0f,
+//									    1.0f,  0.0f , 0,
+//									    0.0f , 1.0f , 0,
+//									    0.0f , 0.0f , 1.0f});
+		float colors[] = new float[36 * 3];
+		for (int i = 0; i < 36 * 3; i += 9) {
+			colors[i] = 1.0f;
+			colors[i + 1] = 0.0f;
+			colors[i + 2] = 0.0f;
+			
+			colors[i + 3] = 0.0f;
+			colors[i + 4] = 1.0f;
+			colors[i + 5] = 0.0f;
+			
+			colors[i + 6] = 0.0f;
+			colors[i + 7] = 0.0f;
+			colors[i + 8] = 1.0f;
+		}
+		
+		geometry.setColors(colors);
 		
 		Mesh mesh = new Mesh(geometry, material);
 		models.add(mesh);
@@ -84,7 +145,7 @@ public class Scene {
 		for (int i = 0; i < 50000; i++) {
 			Node3 node = new Node3();
 			node.setModel(mesh);
-			node.translate(-10.0f + (float)Math.random() * 25.0f , -10.0f + (float)Math.random() * 25.0f  , 0);
+			node.translate(-2.5f + (float)Math.random() * 2.5f , -2.5f + (float)Math.random() * 2.5f  , 0);
 			node.scaling((float)Math.random(), (float)Math.random(), 1);
 			nodes.add(node);
 			stage.addChild(node);
@@ -134,10 +195,13 @@ public class Scene {
     }
 	
 	public void update(float dt) {
+		//System.out.println("delta " + getDelta());
+		float delta = (float)(getDelta() * 0.001f);
+		//System.out.println(delta);
 		for (int i = 0; i < 50000; i++) {
 			Node3 node = nodes.get(i);
-			node.translateX(-0.01f);
-			node.addEulerAngleZ(0.01f);
+			// node.translateX(-0.016f);
+			node.addEulerAngleZ(0.016f);
 		}
 		 updateFPS();
 	}

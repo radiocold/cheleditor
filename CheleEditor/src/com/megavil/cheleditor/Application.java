@@ -46,6 +46,7 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glGetString;
 import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -83,7 +84,7 @@ public class Application {
 		loop();
 
 		// Free the window callbacks and destroy the window
-		glfwFreeCallbacks(window);
+		glfwFreeCallbacks(window); 
 		glfwDestroyWindow(window);
 		// Terminate GLFW and free the error callback
 		glfwTerminate();
@@ -204,6 +205,10 @@ public class Application {
 		{
 		 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_BACK);
+			glFrontFace(GL_CW);    
 			
 			scene.update(0.016f);
 			scene.render();
